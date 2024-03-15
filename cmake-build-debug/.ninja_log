@@ -1,0 +1,16 @@
+# ninja log v5
+1	1038	1710501962494948261	CMakeFiles/CompilerStudy.dir/src/Lexer.cpp.o	3542952d2ece9bb4
+1	476	1710501757386942311	CMakeFiles/CompilerStudy.dir/src/FileReader.cpp.o	36ffe14c114f0158
+0	18	1710531354535000269	build.ninja	c3337806552fce41
+3	37	1710456208106220644	CMakeFiles/CompilerStudy.dir/src/Parser.cpp.o	5e17597b53e8e6c8
+1038	1128	1710501962586948264	CompilerStudy	d4fa38de93e2da16
+1	982	1710501962438948259	CMakeFiles/CompilerStudy.dir/src/Expression.cpp.o	c3882faf3f9dd9dd
+1	988	1710501962446948260	CMakeFiles/CompilerStudy.dir/main.cpp.o	60910a5e0cfac1b2
+6	978	1710541881229586007	CMakeFiles/CompilerStudy.dir/main.cpp.o	60910a5e0cfac1b2
+6	1409	1710541881661765975	CMakeFiles/CompilerStudy.dir/src/Compiler/FileReader.cpp.o	c175620cf9d8d861
+6	2346	1710541882598154052	CMakeFiles/CompilerStudy.dir/src/Compiler/Lexer.cpp.o	2cedb5fb3c28bdb0
+7	2590	1710541882842254940	CMakeFiles/CompilerStudy.dir/src/Compiler/Expression.cpp.o	12af28c12c83f159
+1	589	1710541906967353927	CMakeFiles/CompilerStudy.dir/src/VirtualMachine/VirtualMachine.cpp.o	571872f7730a3f01
+589	705	1710541907079392430	CompilerStudy	2159ab5ef9e94b73
+1	347	1710541919347424663	CMakeFiles/CompilerStudy.dir/main.cpp.o	60910a5e0cfac1b2
+347	432	1710541919431451013	CompilerStudy	2159ab5ef9e94b73
