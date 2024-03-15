@@ -1,0 +1,3 @@
+/home/vitor/Github/CPlusPlus/CompilerStudy/cmake-build-debug/CMakeFiles/CompilerStudy.dir
+/home/vitor/Github/CPlusPlus/CompilerStudy/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/vitor/Github/CPlusPlus/CompilerStudy/cmake-build-debug/CMakeFiles/rebuild_cache.dir
