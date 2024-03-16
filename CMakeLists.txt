@@ -15,4 +15,10 @@ add_executable(CompilerStudy main.cpp
         src/Compiler/BaseType.h
         src/VirtualMachine/VirtualMachine.cpp
         src/VirtualMachine/VirtualMachine.h
+        src/VirtualMachine/ByteCodeEmitter.cpp
+        src/VirtualMachine/ByteCodeEmitter.h
+        src/VirtualMachine/Chunk.h
+        src/VirtualMachine/BytecodeDecompiller.cpp
+        src/VirtualMachine/BytecodeDecompiller.h
+        src/VirtualMachine/OpCode.h
 )
