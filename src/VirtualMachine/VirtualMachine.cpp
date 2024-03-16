@@ -4,25 +4,52 @@
 #include <cstring>
 #include <memory>
 
+#include "OpCode.h"
 #include "../Error.h"
 
 namespace Ample::VM {
     void VirtualMachine::pushInt(const int operand) {
+        if (intSp >= 255) {
+            ERROR("Stack overflow error.");
+        }
+
         this->integerStack.push_back(operand);
         intSp++;
+
+        std::cout << "PUSH " << operand << std::endl;
     }
 
     void VirtualMachine::pushFloat(const float operand) {
+        if (floatSp >= 255) {
+            ERROR("Stack overflow error.");
+        }
+
         this->floatStack.push_back(operand);
         floatSp++;
+
+        std::cout << "PUSH_F " << operand << std::endl;
     }
 
     [[nodiscard]] int VirtualMachine::popIntegerOperand() {
-        return *intSp--;
+        if (intSp <= 0) {
+            ERROR("Stack underflow error.");
+        }
+
+        const int value = integerStack[integerStack.size() - intSp--];
+        std::cout << "POP_F " << value << std::endl;
+
+        return value;
     }
 
     [[nodiscard]] float VirtualMachine::popFloatOperand() {
-        return *floatSp--;
+        if (floatSp <= 0) {
+            ERROR("Stack underflow error.");
+        }
+
+        const float value = floatStack[floatStack.size() - floatSp--];
+        std::cout << "POP_F " << value << std::endl;
+
+        return value;
     }
 
     void VirtualMachine::pushConstOperation() {
@@ -45,6 +72,7 @@ namespace Ample::VM {
     void VirtualMachine::pushIntOperation() {
         const int value = readInt();
         pushInt(value);
+        std::cout << value << std::endl;
     }
 
     void VirtualMachine::pushFloatOperation() {
@@ -60,14 +88,19 @@ namespace Ample::VM {
         // TODO Make readOperation member function
     }
 
-    [[noreturn]] void VirtualMachine::execute() {
+    void VirtualMachine::execute() {
         using enum OpCode;
 
+
         for (;;) {
-            switch (readByte()) {
+            const uint8_t instruction = readByte();
+
+            if (pc == program.data() + static_cast<std::ptrdiff_t>(program.size())) break;
+
+            switch (instruction) {
                 case RETURN:
                     returnOperation();
-                    break;
+                    return;
                 case PUSH_CONST:
                     pushConstOperation();
                     break;
@@ -89,6 +122,7 @@ namespace Ample::VM {
                     mulOperation();
                     break;
                 case MUL_F:
+                    BytecodeDecompiller::disassemblyInstruction(MUL_F);
                     mulfOperation();
                     break;
                 case DIV:
@@ -113,6 +147,7 @@ namespace Ample::VM {
                     pushIntOperation();
                     break;
                 case PUSH_F:
+                    BytecodeDecompiller::disassemblyInstruction(PUSH_F, pc, sizeof(float));
                     pushFloatOperation();
                     break;
                 case READ:
@@ -126,8 +161,13 @@ namespace Ample::VM {
         }
     }
 
+    void VirtualMachine::attachChunk(const Chunk *chunk) {
+        this->program = chunk->program;
+        this->pc = &program[0];
+    }
+
     void VirtualMachine::returnOperation() const {
-        std::cout << "return " << returnCode;
+        std::cout << "Exiting with return code " << returnCode;
         exit(EXIT_SUCCESS);
     }
 
@@ -176,7 +216,8 @@ namespace Ample::VM {
     void VirtualMachine::mulfOperation() {
         const float left = popFloatOperand();
         const float right = popFloatOperand();
-        pushFloat(left * right);
+        const float result = left * right;
+        pushFloat(result);
     }
 
     void VirtualMachine::castToIntegerOperation() {
@@ -194,9 +235,21 @@ namespace Ample::VM {
     }
 
     void VirtualMachine::movOperation() {
+        if (mRegisterSize != sizeof(int)) {
+            ERROR("Invalid size for MOV operation");
+        }
+        int value;
+        std::memcpy(&value, mRegister, sizeof(int));
+        pushInt(value);
     }
 
     void VirtualMachine::movfOperation() {
+        if (mRegisterSize != sizeof(float)) {
+            ERROR("Invalid size for MOV operation");
+        }
+        float value;
+        std::memcpy(&value, mRegister, sizeof(float));
+        pushFloat(value);
     }
 
     uint8_t VirtualMachine::readByte() {
